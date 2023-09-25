@@ -3,28 +3,14 @@ import matplotlib.pyplot as plt
 from matplotlib.patches import Circle
 from matplotlib.animation import FuncAnimation
 
-num_particles = 15
-delta_t = 0.01
-tf = 5
-particle_radius = 0.0225
-line_length = 1.35
-
-fig, ax = plt.subplots()
-ax.set_xlim(0, line_length)
-ax.set_ylim(-particle_radius, particle_radius)
-
-# Circles:
-ax.set_aspect('equal')
-# Line
-ground_line, = ax.plot([0, line_length], [0, 0], 'k-', lw=2)
-
-particle_positions = np.array([0.0] * (num_particles * 2))
 particles = []
 lines = []
+particle_positions = []
+num_particles = 0
 
 
 def update(frame):
-    global particle_positions, particles, lines
+    global particle_positions, particles, lines, num_particles
 
     first_line = frame * (num_particles * 2 + 2) + 1
     for i in range(num_particles * 2):
@@ -36,8 +22,24 @@ def update(frame):
     return particles
 
 
-def animate():
-    global particle_positions, particles, lines
+def animate(n, delta_t):
+    global particle_positions, particles, lines, num_particles
+
+    tf = 5
+    particle_radius = 0.0225
+    line_length = 1.35
+    num_particles = n
+
+    fig, ax = plt.subplots()
+    ax.set_xlim(0, line_length)
+    ax.set_ylim(-particle_radius, particle_radius)
+
+    # Circles:
+    ax.set_aspect('equal')
+    # Line
+    ground_line, = ax.plot([0, line_length], [0, 0], 'k-', lw=2)
+
+    particle_positions = np.array([0.0] * (num_particles * 2))
 
     file_suffix = str(num_particles) + '_' + str(delta_t)
     with open('outputs/particle_train_' + file_suffix + '.txt', 'r') as file:
@@ -65,6 +67,3 @@ def animate():
     print('Gif creado')
 
     plt.show()
-
-
-animate()
