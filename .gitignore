@@ -3,3 +3,5 @@
 outputs/
 images/
 gifs/
+
+__pycache__/
