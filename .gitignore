@@ -1,5 +1,5 @@
 .idea/
 
-/outputs
-/images
-/gifs
+outputs/
+images/
+gifs/
