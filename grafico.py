@@ -18,7 +18,7 @@ def read_file(filename, num_lines):
 
 
 
-deltaT_values = [0.01, 0.001, 0.0001]
+deltaT_values = [0.01, 0.001, 0.0001, 0.00001]
 
 errors = []
 std_devs = []
@@ -28,31 +28,34 @@ for deltaT in deltaT_values:
     t = np.linspace(0, 5, n)
     r = A * np.exp(-(gamma/ (2 * m)) * t) * np.cos(np.sqrt(k /m - ((gamma **2) / (4 * m**2))) * t)
     
-    beeman = read_file(f'outputs/oscilator_beeman_{deltaT}.txt', n)
-    gear = read_file(f'outputs/oscilator_gear_{deltaT}.txt', n)
-    verlet = read_file(f'outputs/oscilator_verlet_{deltaT}.txt', n)
+    format_deltaT = '{0:.6f}'.format(deltaT).rstrip('00')
+    print(format_deltaT)
+    
+    beeman = read_file(f'outputs/oscilator_beeman_{format_deltaT}.txt', n)
+    gear = read_file(f'outputs/oscilator_gear_{format_deltaT}.txt', n)
+    verlet = read_file(f'outputs/oscilator_verlet_{format_deltaT}.txt', n)
 
     error_beeman = np.mean((r - beeman) ** 2)
-    error_gear = np.mean((r - gear) ** 2)
+    #error_gear = np.mean((r - gear) ** 2)
     error_verlet = np.mean((r - verlet) ** 2)
+    
+    r_aux = r[:len(r)-1]
+    aux_gear = gear[1:]   
+
+    # Calcular el error cuadrático medio entre Gear y los resultados analíticos defasados
+    error_gear = np.mean((r_aux - aux_gear) ** 2)
 
     errors.append([error_beeman, error_gear, error_verlet])
 
 
-deltaT = 0.01
-n = int(5/deltaT) + 1
-t = np.linspace(0, 5, n)
-r = A * np.exp(-(gamma/ (2 * m)) * t) * np.cos(np.sqrt(k /m - ((gamma **2) / (4 * m**2))) * t)
+#deltaT = 0.001
+#n = int(5/deltaT) + 1
+#t = np.linspace(0, 5, n)
+#r = A * np.exp(-(gamma/ (2 * m)) * t) * np.cos(np.sqrt(k /m - ((gamma **2) / (4 * m**2))) * t)
 
-beeman = read_file(f'outputs/oscilator_beeman_{deltaT}.txt', n)
-gear = read_file(f'outputs/oscilator_gear_{deltaT}.txt', n)
-verlet = read_file(f'outputs/oscilator_verlet_{deltaT}.txt', n)
-
-
-#beeman = read_file('outputs/oscilator_beeman.txt')
-#gear = read_file('outputs/oscilator_gear.txt')
-#verlet = read_file('outputs/oscilator_verlet.txt')
-
+#beeman = read_file(f'outputs/oscilator_beeman_{deltaT}.txt', n)
+#gear = read_file(f'outputs/oscilator_gear_{deltaT}.txt', n)
+#verlet = read_file(f'outputs/oscilator_verlet_{deltaT}.txt', n)
 
 
 #Graphics
@@ -64,7 +67,6 @@ plt.plot(t, verlet, label='Verlet', color='black', linestyle='--')
 plt.xlabel('Tiempo (s)')
 plt.ylabel('Posición (m)')
 plt.legend()
-plt.title('Solución analítica')
 plt.grid(True)
 plt.show()
 
@@ -72,12 +74,12 @@ nombres_metodos = ['Beeman', 'Gear', 'Verlet']
 
 # Graficar errores para distintos deltaT
 plt.figure(figsize=(8, 6))
-plt.semilogx(deltaT_values, [error[0] for error in errors], marker='o', linestyle='-', label='Error Beeman')
-#plt.semilogx(deltaT_values, [error[1] for error in errors], marker='o', linestyle='-', label='Error Gear')
-#plt.semilogx(deltaT_values, [error[2] for error in errors], marker='o', linestyle='-', label='Error Verlet')
-plt.xlabel('Δt')
+plt.loglog(deltaT_values, [error[0] for error in errors], marker='o', linestyle='-', label='Error Beeman')
+plt.loglog(deltaT_values, [error[1] for error in errors], marker='o', linestyle='-', label='Error Gear')
+plt.loglog(deltaT_values, [error[2] for error in errors], marker='o', linestyle='-', label='Error Verlet')
+
+plt.xlabel('Δt (s)')
 plt.ylabel('Error Cuadrático Medio (MSE)')
-plt.title('Estudio de Error vs. Δt')
 plt.legend()
 plt.grid(True)
 plt.show()
