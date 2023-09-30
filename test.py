@@ -1,0 +1,1 @@
+print("{:.6f}".format(0.00001).rstrip('0').rstrip('.'))
