@@ -58,8 +58,6 @@ def graph_velocity(nums_particles, delta_t):
             for i in range(num_particles):
                 avg_velocity += float(lines[index][first_line + i].split()[1])
 
-                print(float(lines[index][first_line + i].split()[1]))
-            print("avg_velocity: " + str(avg_velocity))
             avg_velocities[index].append(avg_velocity / num_particles)
 
         plt.plot(np.arange(0, tf + 1, 1), avg_velocities[index], label="N = " + str(num_particles))
@@ -72,6 +70,7 @@ def graph_velocity(nums_particles, delta_t):
     plt.close()
 
     # velocity vs particles
+    avg_velocities = np.array(avg_velocities)
     stationary_state = int(avg_velocities.shape[1] * 0.5)  # TODO: Change this to stationary_state (current 50%)
     avg_velocities = np.array(avg_velocities)
     avg_velocities_stationary = avg_velocities[:, stationary_state:]
