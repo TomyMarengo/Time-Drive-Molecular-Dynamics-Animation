@@ -37,7 +37,7 @@ deltaT = 0.001 #ACA TIENE QUE SER EL QUE DIO EN EL OTRO EJ
 data_dict = {} 
 
 for n in ns:
-    velocities, times = read_file(f'outputs/particle_train_{n}_{deltaT}.txt', n)
+    velocities, times = read_file(f'../outputs/particle_train_{n}_{deltaT}.txt', n)
     data_dict[n] = {'velocities': velocities, 'times': times}
     
 t = np.linspace(0, 43, 429)
