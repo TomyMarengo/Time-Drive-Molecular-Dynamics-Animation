@@ -128,12 +128,12 @@ def probability_velocity(nums_particles, delta_t):
         pdf = norm.pdf(x, mu, std)
         pdf /= pdf.sum()
 
-        plt.plot(x, pdf, label="N = " + str(num_particles))
+        plt.plot(x, pdf, label="N = " + str(num_particles) + " (t = 0)")
 
     plt.xlabel('Velocidad (m/s)')
     plt.ylabel('Probabilidad')
     plt.title('Curva de Distribución de Probabilidad de Velocidades')  # TODO: Delete this
-    plt.legend()
+    plt.legend(loc='upper left')
     plt.savefig("images/probability_velocity_" + str(delta_t) + ".png")
     print("Saved probability_velocity_" + str(delta_t) + ".png")
     plt.show()
