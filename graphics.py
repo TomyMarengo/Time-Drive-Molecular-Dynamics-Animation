@@ -2,6 +2,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 from scipy.stats import norm
 import seaborn as sns
+import pandas as pd
 
 tf = 180
 
@@ -103,16 +104,34 @@ def probability_velocity(nums_particles, delta_t):
 
         # Adjust a gaussian distribution to the velocities, plot all simulations in the same plot
         mu, std = norm.fit(velocities[index])
-        x = np.linspace(min(velocities[index]), max(velocities[index]), velocities[index] )
+        x = np.linspace(min(velocities[index]), max(velocities[index]), 50)
         pdf = norm.pdf(x, mu, std)
         pdf /= pdf.sum()
 
         plt.plot(x, pdf, label="N = " + str(num_particles))
 
+    initial_velocities = [] * len(nums_particles)
+    for index, num_particles in enumerate(nums_particles):
+        formatted_delta_t = "{:.6f}".format(delta_t).rstrip('0').rstrip('.')
+        file_suffix = str(num_particles) + '_' + formatted_delta_t
+        with open('outputs/particle_train_' + file_suffix + '.txt', 'r') as file:
+            lines = file.readlines()
+            initial_velocities.append([])
+            for step in range(1):
+                first_line = step * (num_particles + 2) + 1
+                for i in range(num_particles):
+                    initial_velocities[index].append(float(lines[first_line + i].split()[1]))
 
+        # Adjust a gaussian distribution to the velocities, plot all simulations in the same plot
+        mu, std = norm.fit(initial_velocities[index])
+        x = np.linspace(min(velocities[index]), max(velocities[index]), 50)
+        pdf = norm.pdf(x, mu, std)
+        pdf /= pdf.sum()
+
+        plt.plot(x, pdf, label="N = " + str(num_particles))
 
     plt.xlabel('Velocidad (m/s)')
-    plt.ylabel('Densidad de Probabilidad')
+    plt.ylabel('Probabilidad')
     plt.title('Curva de Distribución de Probabilidad de Velocidades')  # TODO: Delete this
     plt.legend()
     plt.savefig("images/probability_velocity_" + str(delta_t) + ".png")
