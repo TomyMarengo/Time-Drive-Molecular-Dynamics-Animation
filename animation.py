@@ -20,7 +20,7 @@ def update(frame):
         particle.center = (particle_positions[i], 0)
 
     # Change title with time in seconds in each frame
-    plt.title('Tiempo: ' + str(frame * 1) + ' s')
+    plt.title('Tiempo: ' + str(frame * 1) + ' s')  # TODO: Delete this
     return particles
 
 
