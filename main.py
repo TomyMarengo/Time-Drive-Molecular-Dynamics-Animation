@@ -8,16 +8,16 @@ from graphics import *
 # phi(25, delta_ts)  # N = 25
 
 # Ej2.1
-nums_particles = [5, 10, 15, 20, 25, 30]
-graph_velocity(nums_particles, 0.0001)  # delta_t = 0.001
+#nums_particles = [5, 10, 15, 20, 25, 30]
+#graph_velocity(nums_particles, 0.001)  # delta_t = 0.001
 
 # Ej2.2
 # nums_particles = [10, 20, 30]
-# probability_velocity(nums_particles, 0.0001)  # delta_t = 0.001
+# probability_velocity(nums_particles, 0.001)  # delta_t = 0.001
 
 # Animation
-# nums_particles = [5, 10, 15, 20, 25, 30]
-# delta_ts = [0.0001]
-# for n in nums_particles:
-#    for t in delta_ts:
-#        animate(n, t)
+nums_particles = [10, 30]
+delta_ts = [0.001]
+for n in nums_particles:
+    for t in delta_ts:
+        animate(n, t)

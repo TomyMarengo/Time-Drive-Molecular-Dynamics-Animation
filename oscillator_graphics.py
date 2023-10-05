@@ -51,7 +51,6 @@ def comparing():
         plt.xlabel('Tiempo (s)')
         plt.ylabel('Posición (m)')
         plt.legend(loc='upper right')
-        plt.show()
         plt.savefig("images/position_" + str(delta_t) + ".png")
         print("Saved position_" + str(delta_t) + ".png")
         plt.close()
@@ -82,7 +81,6 @@ def comparing():
     plt.ylabel('MSE')
     # legend without overlapping (font size 10) upper left
     plt.legend(loc='upper left', fontsize=10)
-    plt.show()
     plt.savefig("images/MSE.png")
     print("Saved MSE.png")
     plt.close()

@@ -12,9 +12,9 @@ num_particles = 0
 def update(frame):
     global particle_positions, particles, lines, num_particles
 
-    first_line = frame * (num_particles + 2) + 1
+    first_line = frame * (num_particles + 1) + 1
     for i in range(num_particles):
-        particle_positions[i] = float(lines[i + first_line].split()[0])
+        particle_positions[i] = float(lines[i + first_line].split()[1]) % 135
 
     for i, particle in enumerate(particles):
         particle.center = (particle_positions[i], 0)
@@ -27,8 +27,8 @@ def animate(n, delta_t):
     global particle_positions, particles, lines, num_particles
 
     tf = 180
-    particle_radius = 0.0225
-    line_length = 1.35
+    particle_radius = 2.25
+    line_length = 135
     num_particles = n
 
     fig, ax = plt.subplots()
@@ -44,12 +44,12 @@ def animate(n, delta_t):
 
     formated_delta_t = "{:.6f}".format(delta_t).rstrip('0').rstrip('.')
     file_suffix = str(num_particles) + '_' + formated_delta_t
-    with open('outputs/particle_train_' + file_suffix + '.txt', 'r') as file:
+    with open('outputs/output_ex2_' + file_suffix + '_no_periodic_position.txt', 'r') as file:
         lines = file.readlines()
 
     first_line = 1
     for i in range(num_particles):
-        particle_positions[i] = float(lines[i + first_line].split()[0])
+        particle_positions[i] = float(lines[i + first_line].split()[1]) % 135
 
     colors = plt.cm.viridis(np.linspace(0, 1, num_particles))
 
@@ -59,7 +59,7 @@ def animate(n, delta_t):
     for particle in particles:
         ax.add_patch(particle)
 
-    max_frames = int(len(lines) / (num_particles + 2))
+    max_frames = int(len(lines) / (num_particles + 1))
 
     ani = FuncAnimation(fig, update, frames=max_frames, blit=True, interval=100)
 
